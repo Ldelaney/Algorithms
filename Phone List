@@ -1,0 +1,89 @@
+//
+//  main.cpp
+//  PHONLST
+//	http://www.spoj.com/problems/PHONELST/
+//  Created by Laura D. on 9/9/15.
+//
+
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+const int DIGITS_MAX = 10;
+
+class Trie_node {
+public:
+    Trie_node* children[DIGITS_MAX] = {NULL};
+    bool leaf = false;
+    bool insert(string element)
+    {
+        unsigned int length = element.length();
+        char index;
+        int I_index;
+        
+        if (this->leaf == true){
+            return false;
+        }
+        
+        if(length == 0)
+        {
+            this->leaf = true; //if the string is empty, we are at the base case
+            for (int i = 0; i < DIGITS_MAX; ++i)
+            {
+            if (this->children[i] != NULL)
+                return false;
+            }
+            return true;
+        }
+        
+        index = element[0]; //index holds the char to compare to
+        I_index = index - 48; //offset for ASCII
+    
+        if (this->children[I_index] == NULL) //there is no child
+        {
+            this->children[I_index] = new Trie_node;
+            return this->children[I_index]->insert(element.substr(1)); //shortens the string by the first character, and repeats the process
+        }
+        else //there is a child
+        {
+            if (this->children[I_index]->leaf == true)
+            {
+                return false;
+            }
+            else
+            {
+                return this->children[I_index]->insert(element.substr(1)); //shortens the string by the first character, and repeats the process
+            }
+        }
+        return true;
+    }
+};
+
+int main(){
+    int testCases;
+    scanf("%i", &testCases);
+    
+    for (int i = 0; i < testCases; i++)
+    {
+        bool keepGoing = true;
+        int numNumbers;
+        scanf("%i", &numNumbers);
+        string temp;
+        Trie_node root;
+        
+        for (int j = 0; j < numNumbers; ++j)
+        {
+            cin >> temp;
+            if (keepGoing)
+            {
+                keepGoing = root.insert(temp);
+            }
+        }
+        if (keepGoing)
+        {
+            printf("YES\n");
+        }
+        else
+            printf("NO\n");
+    }
+}
