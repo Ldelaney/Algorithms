@@ -1,0 +1,35 @@
+//  main.cpp
+//  CANTON
+//  http://www.spoj.com/problems/CANTON/
+//  Created by Laura D. on 9/27/15.
+
+
+#include <iostream>
+
+int main() {
+    int testCases;
+    long int temp;
+    scanf("%d", &testCases);
+    do
+    {
+        scanf("%ld", &temp);
+        long int temp2 = temp;
+        long int i = 1;
+        while (temp2 > i) //find the row of the triangle it is in
+        {
+            temp2 -= i;
+            i++;
+        }
+        long int temp3 = (i - temp2) + 1; //temp3 and temp2 are the two parts of the canton term
+        
+        //some of the rows of the triangle are traversed right to left, others are traveresed left to right
+        if (i%2 == 1)
+            printf("TERM %ld IS %ld/%ld\n", temp, temp3, temp2);
+        else
+            printf("TERM %ld IS %ld/%ld\n", temp, temp2, temp3);
+        
+        
+    }while(--testCases > 0); //could rewrite as a for loop
+    
+    return 0;
+}
